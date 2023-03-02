@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApiSample.Controllers
+namespace DestinationService.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -21,13 +21,16 @@ namespace WebApiSample.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            _logger.LogInformation("WebApiSample checking in!");
+            _logger.LogInformation("DestinationService checking in!");
             await Task.Delay(1000);
 
-            var middleServiceHttpClient = new HttpClient();
-            middleServiceHttpClient.BaseAddress = new Uri("http://localhost:1234");
-
-            return await middleServiceHttpClient.GetFromJsonAsync<IEnumerable<WeatherForecast>>("WeatherForecast") ?? new List<WeatherForecast>();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
         }
     }
 }
