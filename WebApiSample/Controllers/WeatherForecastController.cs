@@ -1,21 +1,21 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WebApiSample.Domain;
+using WebApiSample.Dtos;
 
 namespace WebApiSample.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IMediator _mediator;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IMediator mediator)
         {
             _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -28,6 +28,19 @@ namespace WebApiSample.Controllers
             middleServiceHttpClient.BaseAddress = new Uri("http://localhost:1234");
 
             return await middleServiceHttpClient.GetFromJsonAsync<IEnumerable<WeatherForecast>>("WeatherForecast") ?? new List<WeatherForecast>();
+        }
+
+        [HttpPost(Name = "PostWeatherForecast")]
+        public async Task<WeatherForecast> Post(CreateWeatherForecastWithRequiredPropertiesCommand request)
+        {
+            return await _mediator.Send(request);
+        }
+
+
+        [HttpPost(Name = "PostWeatherForecastAsRecord")]
+        public async Task<WeatherForecast> PostRecord(CreateWeatherForecastAsRecordCommand request)
+        {
+            return await _mediator.Send(request);
         }
     }
 }
