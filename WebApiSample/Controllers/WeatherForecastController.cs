@@ -31,6 +31,7 @@ namespace WebApiSample.Controllers
         }
 
         [HttpPost(Name = "PostWeatherForecast")]
+        [Consumes("application/json")]
         public async Task<WeatherForecast> Post(CreateWeatherForecastWithRequiredPropertiesCommand request)
         {
             return await _mediator.Send(request);
@@ -38,6 +39,7 @@ namespace WebApiSample.Controllers
 
 
         [HttpPost(Name = "PostWeatherForecastAsRecord")]
+        [Consumes("application/json")]
         public async Task<WeatherForecast> PostRecord(CreateWeatherForecastAsRecordCommand request)
         {
             return await _mediator.Send(request);

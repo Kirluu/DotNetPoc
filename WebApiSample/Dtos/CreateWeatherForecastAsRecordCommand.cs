@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WebApiSample.Dtos
 {
-    public record CreateWeatherForecastAsRecordCommand(DateTime Date, int TemperatureC, string? Summary) : IRequest<WeatherForecastDto>
+    public record CreateWeatherForecastAsRecordCommand(DateTime Date, int TemperatureC, string Summary) : IRequest<WeatherForecastDto>
     {
         // NOTE: We can't use "required" keyword in the constructor parameter syntax, so we can't make use of the nice built-in validation of the presence of "required" properties being part of a posted JSON body.
     }
@@ -12,7 +14,7 @@ namespace WebApiSample.Dtos
     {
         public CreateWeatherForecastAsRecordCommandHandler()
         {
-            RuleFor(x => x.TemperatureC).NotEmpty();
+            //RuleFor(x => x.TemperatureC).NotEmpty();
         }
 
         public Task<WeatherForecastDto> Handle(CreateWeatherForecastAsRecordCommand request, CancellationToken cancellationToken)

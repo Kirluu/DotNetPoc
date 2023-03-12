@@ -3,6 +3,8 @@ using Common;
 using Serilog;
 using Serilog.Enrichers.Span;
 using WebApiSample;
+using WebApiSample.Swashbuckle;
+using WebApiSample.SystemTextJson;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithSpan()
@@ -22,10 +24,20 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(o => o.InputFormatters.Add(new TreatNonNullableAsRequiredInputFormatter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    /*...*/
+    c.SchemaFilter<RequireNonNullablePropertiesSchemaFilter>();
+    c.SupportNonNullableReferenceTypes(); // Sets Nullable flags appropriately.              
+    c.UseAllOfToExtendReferenceSchemas(); // Allows $ref enums to be nullable
+    c.UseAllOfForInheritance();  // Allows $ref objects to be nullable
+
+});
+
+builder.Services.ConfigureHttpJsonOptions(x => { });
 
 builder.Services.AddMediatR(x => { x.RegisterServicesFromAssemblyContaining<Program>(); });
 builder.Services.AddAutoMapper(x => { x.AddProfile<MappingProfile>(); });
