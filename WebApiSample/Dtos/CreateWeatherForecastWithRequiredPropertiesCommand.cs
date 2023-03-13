@@ -11,9 +11,10 @@ namespace WebApiSample.Dtos
         public required DateTime Date { get; set; }
 
         // NOTE: Can I have a DTO with no required and use AutoMapper to create a Domain entity which has required on a property that is auto-mapped? (In a way, the property is assigned by AutoMapper, but in this case, the required-ness doesn't "correctly" / automagically transfer to the DTO which may have not had its created value created in a "required" way)
-        //[JsonRequired]
-        public required int TemperatureC { get; set; }
+        [JsonRequired]
+        public int TemperatureC { get; set; }
 
+        [JsonRequired]
         public string? Summary { get; set; }
 
         public WeatherForecast ToDomain()

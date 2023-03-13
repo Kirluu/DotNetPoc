@@ -16,7 +16,7 @@ namespace WebApiSample.CustomMediator
             this._createWeatherForecastCommandHandler = createWeatherForecastCommandHandler;
         }
 
-        [HttpPost(Name = "PostWeatherForecastAsRecord")]
+        [HttpPost(Name = "PostWeatherForecastAsRecord2")]
         [Consumes("application/json")]
         public async Task<WeatherForecast> PostRecord(CreateWeatherForecastAsRecordCommand request)
         {
@@ -40,8 +40,9 @@ namespace WebApiSample.CustomMediator
         public T Run<T>(Func<T> next)
         {
             _logger.LogInformation("Before!");
-            next();
+            var res = next();
             _logger.LogInformation("After!");
+            return res;
         }
     }
 

@@ -2,6 +2,7 @@ using AutoMapper;
 using Common;
 using Serilog;
 using Serilog.Enrichers.Span;
+using System.Text.Json.Serialization.Metadata;
 using WebApiSample;
 using WebApiSample.Swashbuckle;
 using WebApiSample.SystemTextJson;
@@ -24,7 +25,18 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 
-builder.Services.AddControllers(o => o.InputFormatters.Add(new TreatNonNullableAsRequiredInputFormatter()));
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        o.JsonSerializerOptions.TypeInfoResolver = new DefaultJsonTypeInfoResolver
+        {
+            Modifiers =
+            {
+                JsonModifiers.MakeNonNullableValueTypesRequired
+            }
+        };
+    });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
