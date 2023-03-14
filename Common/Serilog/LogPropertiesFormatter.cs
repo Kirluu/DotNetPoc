@@ -1,7 +1,7 @@
 ﻿using Serilog.Events;
 using Serilog.Formatting;
 
-namespace Common
+namespace Common.Serilog
 {
     public class LogPropertiesFormatter : ITextFormatter
     {

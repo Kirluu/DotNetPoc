@@ -32,15 +32,20 @@ namespace WebApiSample.Controllers
 
         [HttpPost(Name = "PostWeatherForecast")]
         [Consumes("application/json")]
-        public async Task<WeatherForecast> Post(CreateWeatherForecastWithRequiredPropertiesCommand request)
+        public async Task<WeatherForecastDto> Post(CreateWeatherForecastWithRequiredPropertiesCommand request)
         {
+            _logger.LogTrace("Trace...");
+            _logger.LogDebug("Debug...");
+            _logger.LogError("Error...");
+            _logger.LogWarning("Warning...");
+            _logger.LogCritical("Critical...");
             return await _mediator.Send(request);
         }
 
 
         [HttpPost(Name = "PostWeatherForecastAsRecord")]
         [Consumes("application/json")]
-        public async Task<WeatherForecast> PostRecord(CreateWeatherForecastAsRecordCommand request)
+        public async Task<WeatherForecastDto> PostRecord(CreateWeatherForecastAsRecordCommand request)
         {
             return await _mediator.Send(request);
         }

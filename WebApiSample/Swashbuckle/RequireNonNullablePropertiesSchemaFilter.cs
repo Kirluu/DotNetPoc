@@ -9,7 +9,7 @@ namespace WebApiSample.Swashbuckle
     public class RequireNonNullablePropertiesSchemaFilter : ISchemaFilter
     {
         /// <summary>
-        /// Add to model.Required all properties where Nullable is false.
+        /// Add to model. Required all properties where Nullable is false.
         /// </summary>
         public void Apply(OpenApiSchema model, SchemaFilterContext context)
         {

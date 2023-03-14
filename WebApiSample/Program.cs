@@ -6,12 +6,16 @@ using System.Text.Json.Serialization.Metadata;
 using WebApiSample;
 using WebApiSample.Swashbuckle;
 using WebApiSample.SystemTextJson;
+using Common.Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithSpan()
     .Enrich.FromLogContext()
+    .Enrich.WithCustomLogLevel()
+    .MinimumLevel.Verbose()
     //.WriteTo.Console(new LogPropertiesFormatter())
-    .WriteTo.Console()
+    .WriteTo.Console(outputTemplate:
+        "[{Timestamp:HH:mm:ss} {MyLogLevel}] {Message:lj}{NewLine}{Properties}{NewLine}{Exception}", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose) // TODO: Can we change how log levels are printed (to fit standard naming and not use Serilog's chosen loglevel names), but keep the color logic stuff?
     .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
