@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using WebApiSample.Domain;
 using WebApiSample.Dtos;
+using WebApiSample.Options;
 
 namespace WebApiSample.Controllers
 {
@@ -48,6 +50,12 @@ namespace WebApiSample.Controllers
         public async Task<WeatherForecastDto> PostRecord(CreateWeatherForecastAsRecordCommand request)
         {
             return await _mediator.Send(request);
+        }
+
+        [HttpGet(Name = "GetMyOptions")]
+        public MyOptions GetMyOptions(IOptions<MyOptions> options)
+        {
+            return options.Value;
         }
     }
 }

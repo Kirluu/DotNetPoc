@@ -7,6 +7,8 @@ using WebApiSample;
 using WebApiSample.Swashbuckle;
 using WebApiSample.SystemTextJson;
 using Common.Serilog;
+using WebApiSample.Options;
+using FluentValidation;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithSpan()
@@ -29,6 +31,9 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.BindOptionsTypeToSection<MyOptions>("MyOptions");
+
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
     {
@@ -50,7 +55,6 @@ builder.Services.AddSwaggerGen(c =>
     c.SupportNonNullableReferenceTypes(); // Sets Nullable flags appropriately.              
     c.UseAllOfToExtendReferenceSchemas(); // Allows $ref enums to be nullable
     c.UseAllOfForInheritance();  // Allows $ref objects to be nullable
-
 });
 
 builder.Services.ConfigureHttpJsonOptions(x => { });

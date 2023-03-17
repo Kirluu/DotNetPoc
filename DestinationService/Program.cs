@@ -5,7 +5,7 @@ using Serilog.Enrichers.Span;
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithSpan()
     .Enrich.FromLogContext()
-    .WriteTo.Console(new LogPropertiesFormatter())
+    .WriteTo.Console()//new LogPropertiesFormatter())
     .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
