@@ -22,8 +22,8 @@ namespace Common.Serilog
         {
             var (myLogLevel, foregroundColor, backgroundColor) = GetMyLogLevelString(logEvent.Level);
             var logEventProperty = propertyFactory.CreateProperty(PropertyName, myLogLevel);
-            var special = new ConsoleLogEventProperty(logEventProperty, foregroundColor, backgroundColor);
-            logEvent.AddPropertyIfAbsent(special);
+            var consoleLogEventProperty = new ConsoleLogEventProperty(logEventProperty, foregroundColor, backgroundColor);
+            logEvent.AddPropertyIfAbsent(consoleLogEventProperty);
         }
 
         private static (string, ConsoleColor, ConsoleColor?) GetMyLogLevelString(LogEventLevel logLevel)
