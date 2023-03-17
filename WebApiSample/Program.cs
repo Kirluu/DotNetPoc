@@ -9,6 +9,7 @@ using WebApiSample.SystemTextJson;
 using Common.Serilog;
 using WebApiSample.Options;
 using FluentValidation;
+using Common.NSwag;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithSpan()
@@ -48,14 +49,18 @@ builder.Services.AddControllers()
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerDocument(c =>
 {
-    /*...*/
-    c.SchemaFilter<RequireNonNullablePropertiesSchemaFilter>();
-    c.SupportNonNullableReferenceTypes(); // Sets Nullable flags appropriately.              
-    c.UseAllOfToExtendReferenceSchemas(); // Allows $ref enums to be nullable
-    c.UseAllOfForInheritance();  // Allows $ref objects to be nullable
+
 });
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    // TODO: Do this, but in NSwag
+//    c.SchemaFilter<RequireNonNullablePropertiesSchemaFilter>();
+//    c.SupportNonNullableReferenceTypes(); // Sets Nullable flags appropriately.              
+//    c.UseAllOfToExtendReferenceSchemas(); // Allows $ref enums to be nullable
+//    c.UseAllOfForInheritance();  // Allows $ref objects to be nullable
+//});
 
 builder.Services.ConfigureHttpJsonOptions(x => { });
 
@@ -71,9 +76,10 @@ mapper.ConfigurationProvider.AssertConfigurationIsValid();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI();
 }
+
+app.UseOpenApi();
+app.UseSwaggerUi3();
 
 app.UseAuthorization();
 
